@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+
+<body>
+
+<header th:replace="~{general/fragmentos :: header}"></header>
+
+<div class="container mt-5 text-center">
+    <h1>Tienda Esteban</h1>
+    <p>Proyecto de Consultas</p>
+
+    <a class="btn btn-success"
+       th:href="@{/consultas/listado}">
+        Ir a Consultas
+    </a>
+</div>
+
+<footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+</body>
+</html>
