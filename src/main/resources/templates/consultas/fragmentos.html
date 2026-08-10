@@ -158,17 +158,17 @@
                 <div class="card-footer text-center">
 
                     <span class="text-success h5"
-                          th:text="${#numbers.formatCurrency(p.precio)}">
+                          th:text="'₡' + ${#numbers.formatDecimal(p.precio, 1, 'POINT', 2, 'COMMA')}">
                     </span>
 
                     <br>
 
-                    <span th:if="${p.existencias>0}"
+                    <span th:if="${p.existencias > 0}"
                           class="badge bg-success"
-                          th:text="${p.existencias}+' unidades'">
+                          th:text="${p.existencias} + ' unidades'">
                     </span>
 
-                    <span th:unless="${p.existencias>0}"
+                    <span th:unless="${p.existencias > 0}"
                           class="badge bg-danger">
                         Agotado
                     </span>
