@@ -3,11 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.esteban.tienda.domain;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Data;
+
 
 /**
  *
@@ -25,7 +37,6 @@ public class Producto implements Serializable {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    private Integer idCategoria;
 
     @Column(nullable = false, length = 50)
     @NotBlank(message = "La descripción no puede estar vacía.")
@@ -49,4 +60,7 @@ public class Producto implements Serializable {
 
     private boolean activo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 }
