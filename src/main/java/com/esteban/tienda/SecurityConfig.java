@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 /**
  *
  * @author ejfon
@@ -31,18 +30,31 @@ public class SecurityConfig {
 
         var rutas = rutaService.getRutas();
 
+        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers("/registro/**")
+        );
+
         http.authorizeHttpRequests(requests -> {
+
+            requests.requestMatchers(
+                    "/registro/**",
+                    "/login",
+                    "/acceso_denegado",
+                    "/fav/**",
+                    "/js/**",
+                    "/webjars/**"
+            ).permitAll();
 
             for (Ruta ruta : rutas) {
 
                 if (ruta.isRequiereRol()) {
 
-                    requests.requestMatchers(ruta.getRuta())
+                    requests.requestMatchers(ruta.getRuta().trim())
                             .hasRole(ruta.getRol().getRol());
 
                 } else {
 
-                    requests.requestMatchers(ruta.getRuta())
+                    requests.requestMatchers(ruta.getRuta().trim())
                             .permitAll();
                 }
             }
@@ -56,15 +68,21 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login?error=true")
                 .permitAll()
-        ).logout(logout -> logout
+        );
+
+        http.logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-        ).exceptionHandling(exceptions -> exceptions
+        );
+
+        http.exceptionHandling(exceptions -> exceptions
                 .accessDeniedPage("/acceso_denegado")
-        ).sessionManagement(session -> session
+        );
+
+        http.sessionManagement(session -> session
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
         );
