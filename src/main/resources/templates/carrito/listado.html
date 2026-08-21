@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>Carrito</title>
+    </head>
+
+    <body>
+
+        <header th:replace="~{general/fragmentos :: header}"/>
+
+        <section class="container py-4">
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <a th:href="@{/}" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i>
+                        Seguir comprando
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h4>Carrito de compras</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div th:if="${carritoItems != null and !carritoItems.isEmpty()}">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-striped align-middle">
+
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Subtotal</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr th:each="item : ${carritoItems}">
+
+                                        <td th:text="${item.producto.descripcion}">
+                                            Producto
+                                        </td>
+
+                                        <td th:text="${#numbers.formatCurrency(item.precioHistorico)}">
+                                            ₡0
+                                        </td>
+
+                                        <td th:text="${item.cantidad}">
+                                            0
+                                        </td>
+
+                                        <td th:text="${#numbers.formatCurrency(item.subTotal)}">
+                                            ₡0
+                                        </td>
+
+                                        <td>
+
+                                            <a th:href="@{/carrito/modificar/{id}(id=${item.producto.idProducto})}"
+                                               class="btn btn-warning btn-sm">
+                                                <i class="fas fa-pencil-alt"></i>
+                                                Modificar
+                                            </a>
+
+                                            <form th:action="@{/carrito/eliminar/{id}(id=${item.producto.idProducto})}"
+                                                  method="post"
+                                                  class="d-inline">
+
+                                                <button type="submit"
+                                                        class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                    Eliminar
+                                                </button>
+
+                                            </form>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="text-end mt-3">
+
+                            <a th:href="@{/facturar/carrito}"
+                               class="btn btn-success">
+
+                                <i class="fas fa-shopping-cart"></i>
+                                Facturar
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div th:if="${carritoItems == null or carritoItems.isEmpty()}"
+                         class="alert alert-info text-center">
+
+                        El carrito está vacío.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section th:replace="~{general/fragmentos :: mostrarToast}"/>
+
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+
+    </body>
+
+</html>

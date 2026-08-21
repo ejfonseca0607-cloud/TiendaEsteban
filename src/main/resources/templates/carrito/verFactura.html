@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>Factura - TechShop</title>
+    </head>
+
+    <body>
+
+        <!-- HEADER -->
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+
+        <!-- CONTENIDO DE LA FACTURA -->
+        <section class="container py-4">
+
+            <!-- Botón regresar -->
+            <div class="mb-3">
+
+                <a th:href="@{/}"
+                   class="btn btn-primary">
+
+                    <i class="fas fa-arrow-left"></i>
+                    Seguir comprando
+
+                </a>
+
+            </div>
+
+
+            <div class="card shadow-sm">
+
+                <!-- Encabezado -->
+                <div class="card-header">
+
+                    <h3 class="mb-0">
+
+                        <i class="fas fa-file-invoice"></i>
+                        Factura
+
+                    </h3>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <!-- Verifica que exista factura -->
+                    <div th:if="${factura != null}">
+
+
+                        <!-- DATOS GENERALES -->
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+
+                                <p>
+                                    <strong>Número de factura:</strong>
+
+                                    <span th:text="${factura.idFactura}">
+                                        0
+                                    </span>
+                                </p>
+
+
+                                <p>
+                                    <strong>Usuario:</strong>
+
+                                    <span th:text="${factura.usuario.username}">
+                                        Usuario
+                                    </span>
+                                </p>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <p>
+                                    <strong>Fecha:</strong>
+
+                                    <span th:text="${factura.fecha}">
+                                        Fecha
+                                    </span>
+                                </p>
+
+
+                                <p>
+                                    <strong>Estado:</strong>
+
+                                    <span class="badge bg-success"
+                                          th:text="${factura.estado}">
+                                        PAGADA
+                                    </span>
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TABLA DE PRODUCTOS -->
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-hover">
+
+                                <thead class="table-light">
+
+                                    <tr>
+
+                                        <th>
+                                            Producto
+                                        </th>
+
+                                        <th>
+                                            Precio
+                                        </th>
+
+                                        <th>
+                                            Cantidad
+                                        </th>
+
+                                        <th>
+                                            Subtotal
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    <tr th:each="venta : ${factura.ventas}">
+
+                                        <!-- PRODUCTO -->
+                                        <td th:text="${venta.producto.descripcion}">
+                                            Producto
+                                        </td>
+
+
+                                        <!-- PRECIO -->
+                                        <td th:text="${#numbers.formatCurrency(venta.precioHistorico)}">
+                                            ₡0,00
+                                        </td>
+
+
+                                        <!-- CANTIDAD -->
+                                        <td th:text="${venta.cantidad}">
+                                            0
+                                        </td>
+
+
+                                        <!-- SUBTOTAL -->
+                                        <td th:text="${#numbers.formatCurrency(venta.subTotal)}">
+                                            ₡0,00
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <!-- TOTAL -->
+                        <div class="row mt-4">
+
+                            <div class="col-md-6 offset-md-6">
+
+                                <div class="card">
+
+                                    <div class="card-body text-end">
+
+                                        <h4>
+
+                                            <strong>Total:</strong>
+
+                                            <span class="text-success"
+                                                  th:text="${#numbers.formatCurrency(factura.total)}">
+
+                                                ₡0,00
+
+                                            </span>
+
+                                        </h4>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SI NO EXISTE FACTURA -->
+                    <div th:if="${factura == null}"
+                         class="alert alert-warning">
+
+                        No se encontró información de la factura.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+    </body>
+
+</html>

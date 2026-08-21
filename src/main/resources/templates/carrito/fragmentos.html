@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+
+        <!-- Fragmento que muestra el carrito -->
+        <section th:fragment="verCarrito" id="carrito">
+
+            <div class="container mt-4">
+
+                <h3>Carrito de compras</h3>
+
+                <div th:if="${listaItems != null and !listaItems.isEmpty()}">
+
+                    <table class="table table-striped table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr th:each="item : ${listaItems}">
+
+                                <td th:text="${item.producto.descripcion}">
+                                    Producto
+                                </td>
+
+                                <td th:text="${item.precioHistorico}">
+                                    0
+                                </td>
+
+                                <td th:text="${item.cantidad}">
+                                    0
+                                </td>
+
+                                <td th:text="${item.subTotal}">
+                                    0
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="text-end">
+
+                        <strong>Total:</strong>
+
+                        <span th:text="${carritoTotal}">
+                            0
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div th:if="${listaItems == null or listaItems.isEmpty()}">
+
+                    <p>El carrito está vacío.</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Fragmento para mostrar los datos de una factura -->
+        <section th:fragment="verFactura">
+
+            <div class="container mt-4">
+
+                <h3>Factura</h3>
+
+                <div th:if="${factura != null}">
+
+                    <p>
+                        <strong>Número de factura:</strong>
+                        <span th:text="${factura.idFactura}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Usuario:</strong>
+                        <span th:text="${factura.usuario.username}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Fecha:</strong>
+                        <span th:text="${factura.fecha}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        <span th:text="${factura.estado}">PAGADA</span>
+                    </p>
+
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr th:each="venta : ${factura.ventas}">
+
+                                <td th:text="${venta.producto.descripcion}">
+                                    Producto
+                                </td>
+
+                                <td th:text="${venta.precioHistorico}">
+                                    0
+                                </td>
+
+                                <td th:text="${venta.cantidad}">
+                                    0
+                                </td>
+
+                                <td th:text="${venta.precioHistorico.multiply(
+                                               T(java.math.BigDecimal).valueOf(venta.cantidad)
+                                               )}">
+                                    0
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="text-end">
+
+                        <strong>Total:</strong>
+
+                        <span th:text="${factura.total}">
+                            0
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </body>
+
+</html>
